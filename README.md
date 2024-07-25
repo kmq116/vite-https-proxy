@@ -74,4 +74,5 @@ vite.config.ts 文件下
 
 请求本地 api/test 的接口，指向了本地的 nodejs http 接口，说明代理生效
 ![alt text](image-3.png)
+![alt text](image-5.png)
 ![alt text](image-4.png)
