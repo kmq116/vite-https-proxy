@@ -1,23 +1,25 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from "./components/HelloWorld.vue";
 import axios from "axios";
 
-console.log(axios)
-// axios.get('/api/test')
-//     .then(response => {
-//       console.log(response.data);
-//     })
-//     .catch(error => {
-//       console.error('Error:', error);
-//     });
+console.log(axios);
+axios
+  .get("/api/test")
+  .then((response) => {
+    console.log(response.data);
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
 
-axios.get('img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png')
-    .then(response => {
-      console.log(response.data);
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+axios
+  .get("img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png")
+  .then((response) => {
+    console.log(response.data);
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
 </script>
 
 <template>
