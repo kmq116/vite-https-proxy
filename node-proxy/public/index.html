@@ -1,60 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Document</title>
+
 </head>
 
 <body>
-<button id="find-me">显示我的位置</button><br />
+<button id="find-me">显示我的位置</button>
+<br/>
 <p id="status"></p>
 <a id="map-link" target="_blank"></a>
 <script>
-  function geoFindMe() {
-    const status = document.querySelector("#status");
-    const mapLink = document.querySelector("#map-link");
+    // var map = new BMapGL.Map("allmap");
+    // var point = new BMapGL.Point(116.331398,39.897445);
+    // map.centerAndZoom(point,12);
+    //
+    // var geolocation = new BMapGL.Geolocation();
+    // geolocation.getCurrentPosition(function(r){
+    //     if(this.getStatus() == BMAP_STATUS_SUCCESS){
+    //         var mk = new BMapGL.Marker(r.point);
+    //         map.addOverlay(mk);
+    //         map.panTo(r.point);
+    //         alert('您的位置：' + r.point.lng + ',' + r.point.lat);
+    //     }
+    //     else {
+    //         alert('failed' + this.getStatus());
+    //     }
+    // });
 
-    mapLink.href = "";
-    mapLink.textContent = "";
 
-    function success(position) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
+    function geoFindMe() {
+        const status = document.querySelector("#status");
+        const mapLink = document.querySelector("#map-link");
 
-      status.textContent = "";
-      mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
-      mapLink.textContent = `纬度：${latitude} °，经度：${longitude} °`;
+        mapLink.href = "";
+        mapLink.textContent = "";
+
+        function success(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            status.textContent = "";
+            mapLink.href = `https://geojson.io/#map=19/${latitude}/${longitude}`;
+            // https://geojson.io/#map=19/39.09674/117.08079
+            // mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
+            mapLink.textContent = `纬度：${latitude} °，经度：${longitude} °`;
+        }
+
+
+        function error(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+            }
+        }
+
+        if (!navigator.geolocation) {
+            status.textContent = "你的浏览器不支持地理位置";
+        } else {
+            status.textContent = "定位中……";
+            navigator.geolocation.getCurrentPosition(success, error);
+        }
     }
 
-    function error() {
-      status.textContent = "无法获取你的位置";
-    }
+    document.querySelector("#find-me").addEventListener("click", geoFindMe);
 
-    if (!navigator.geolocation) {
-      status.textContent = "你的浏览器不支持地理位置";
-    } else {
-      status.textContent = "定位中……";
-      navigator.geolocation.getCurrentPosition(success, error);
-    }
-  }
-
-  document.querySelector("#find-me").addEventListener("click", geoFindMe);
-
-  if ("geolocation" in navigator) {
-    navigator.geolocation.getCurrentPosition(
+    if ("geolocation" in navigator) {
+        console.log('获取定位')
+        navigator.geolocation.getCurrentPosition(
             function (position) {
-              var latitude = position.coords.latitude;
-              var longitude = position.coords.longitude;
-              console.log("纬度: " + latitude + ", 经度: " + longitude);
+                console.log(position)
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+                alert("纬度: " + latitude + ", 经度: " + longitude);
             },
             function (error) {
-              console.log("获取位置失败: " + error.message);
+                alert("获取位置失败: " + error.message);
             }
-    );
-  } else {
-    console.log("浏览器不支持地理定位");
-  }
+        );
+    } else {
+        alert("浏览器不支持地理定位");
+    }
 </script>
 </body>
 </html>
